@@ -33,3 +33,9 @@
   (->> (parse-input "input")
        (filter valid-password?)
        (count)))
+
+(defn count-valid-paswords2
+  []
+  (->> (parse-input "input")
+       (filter valid-password2?)
+       count))
