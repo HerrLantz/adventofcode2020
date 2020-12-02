@@ -13,7 +13,14 @@
         (and (>= $ l)
              (<= $ h))))
 
-
+(defn valid-password2?
+  [[l h letter password]]
+  (let [cond1 (= letter (str (nth password (dec l))))
+        cond2 (= letter (str (nth password (dec h))))]
+    (->> [cond1 cond2]
+         (filter identity)
+         (count)
+         (= 1))))
 
 (defn parse-input
   [file]
