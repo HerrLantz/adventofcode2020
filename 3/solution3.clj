@@ -23,7 +23,7 @@
                               (inc nr-of-trees)
                               nr-of-trees)
             new-x           (mod (+ x (:x slope)) end-of-map-x)
-            new-y           (+ new-y (:y slope))]
+            new-y           (+ y (:y slope))]
         (if (>= new-y end-of-map-y)
           new-nr-of-trees
           (recur new-nr-of-trees new-x new-y))))))
@@ -36,8 +36,9 @@
 (defn travel2
   []
   (as-> (parse-input "input") $
-        (map * (map count-trees $ [{:y 1 :x 1}
-                                   {:y 3 :x 1}
-                                   {:y 5 :x 1}
-                                   {:y 7 :x 1}
-                                   {:y 1 :x 2}]))))
+        (map #(count-trees $ %) [{:y 1 :x 1}
+                                 {:y 1 :x 3}
+                                 {:y 1 :x 5}
+                                 {:y 1 :x 7}
+                                 {:y 2 :x 1}])))
+
