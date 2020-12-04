@@ -1,6 +1,9 @@
 (ns solution4.core
   (:require [clojure.string :as str]))
 
+(def required-fields
+  '(:byr :iyr :eyr :hgt :hcl :ecl :pid))
+
 (defn make-key-value
   [kv]
   (let [[k v] (str/split kv #":")]
@@ -27,28 +30,19 @@
       false)))
 
 (defn valid-year?
-  [type year]
-  (condp = type
-    :byr (and (>= year 1920) (<= year 2002))
-    :iyr (and (>= year 2010) (<= year 2020))
-    :eyr (and (>= year 2020) (<= year 2030))))
+  [type year low high]
+  (and (>= year low) (<= year high)))
 
 (defn valid-passport?
   [passport]
-  (and (:byr passport)
-       (:iyr passport)
-       (:eyr passport)
-       (:hgt passport)
-       (:hcl passport)
-       (:ecl passport)
-       (:pid passport)))
+  (reduce (fn [acc curr] (and acc (some #{curr} (keys passport)))) true required-fields))
 
 (defn valid-passport2?
   [field]
   (and
-   (when (:byr field) (valid-year? :byr (Integer. (:byr field))))
-   (when (:iyr field) (valid-year? :iyr (Integer. (:iyr field))))
-   (when (:eyr field) (valid-year? :eyr (Integer. (:eyr field))))
+   (when (:byr field) (valid-year? :byr (Integer. (:byr field)) 1920 2002))
+   (when (:iyr field) (valid-year? :iyr (Integer. (:iyr field)) 2010 2020))
+   (when (:eyr field) (valid-year? :eyr (Integer. (:eyr field)) 2020 2030))
    (when (:hgt field) (valid-height? (:hgt field)))
    (when (:hcl field) (re-matches #"#[a-f0-9]{6}" (:hcl field)))
    (when (:ecl field) (re-matches #"(amb|blu|brn|gry|grn|hzl|oth)" (:ecl field)))
