@@ -16,10 +16,6 @@
       \R (drop half-seats seats)
       \L (take half-seats seats))))
 
-(defn get-seat-id
-  [row col]
-  (+ col (* row 8)))
-
 (defn get-position-from-bsp
   [bsp row-or-column]
   (loop [[lh seats] (condp = row-or-column
@@ -33,10 +29,19 @@
   [bsp]
   (let [row    (get-position-from-bsp bsp :row)
         column (get-position-from-bsp bsp :column)]
-    (get-seat-id row column)))
+    (+ column (* row 8))))
 
 (defn find-highest-seat-id-from-bsps
   []
   (->> (parse-input "input")
        (map (fn [bsp] (get-seat-id-from-bsp bsp)))
        (reduce (fn [acc curr] (if (> curr acc) curr acc)) 0)))
+
+(defn find-my-seat-id
+  []
+  (let [ids      (->> (parse-input "input")
+                      (map (fn [bsp] (get-seat-id-from-bsp bsp)))
+                      (sort))
+        cons-ids (range (first ids) (inc (last  ids)))]
+    (- (reduce - ids) (reduce - cons-ids))))
+
