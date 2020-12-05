@@ -2,8 +2,7 @@
   (:require [clojure.string :as str]))
 
 (defn parse-input [input]
-  (as-> (slurp input) $
-        (str/split $ #"\n")
+  (as-> (str/split (slurp input) #"\n") $
         (map (fn [s] (-> (str/replace s #"(L|F)" "0")
                          (str/replace   #"(R|B)" "1"))) $)))
 
