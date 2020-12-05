@@ -21,13 +21,11 @@
         (map parse-passport $)))
 
 (defn valid-height?
-  [height-and-unit]
-  (let [[h unit] (re-seq #"\d+|cm|in" height-and-unit)
-        height        (Integer. h)]
-    (condp = unit
-      "in"  (and (>= height 59)  (<= height 76))
-      "cm"  (and (>= height 150) (<= height 193))
-      false)))
+  [height unit]  
+  (condp = unit
+    "in"  (and (>= (Integer. height) 59)  (<= (Integer. height) 76))
+    "cm"  (and (>= (Integer. height) 150) (<= (Integer. height) 193))
+    false))
 
 (defn valid-year?
   [type year low high]
@@ -39,14 +37,13 @@
 
 (defn valid-passport2?
   [field]
-  (and
-   (when (:byr field) (valid-year? :byr (Integer. (:byr field)) 1920 2002))
-   (when (:iyr field) (valid-year? :iyr (Integer. (:iyr field)) 2010 2020))
-   (when (:eyr field) (valid-year? :eyr (Integer. (:eyr field)) 2020 2030))
-   (when (:hgt field) (valid-height? (:hgt field)))
-   (when (:hcl field) (re-matches #"#[a-f0-9]{6}" (:hcl field)))
-   (when (:ecl field) (re-matches #"(amb|blu|brn|gry|grn|hzl|oth)" (:ecl field)))
-   (when (:pid field) (re-matches #"\d{9}" (:pid field)))))
+  (and (when (:byr field) (valid-year? :byr (Integer. (:byr field)) 1920 2002))
+       (when (:iyr field) (valid-year? :iyr (Integer. (:iyr field)) 2010 2020))
+       (when (:eyr field) (valid-year? :eyr (Integer. (:eyr field)) 2020 2030))
+       (when (:hgt field) (apply valid-height? (re-seq #"\d+|cm|in" (:hgt field))))
+       (when (:hcl field) (re-matches #"#[a-f0-9]{6}" (:hcl field)))
+       (when (:ecl field) (re-matches #"(amb|blu|brn|gry|grn|hzl|oth)" (:ecl field)))
+       (when (:pid field) (re-matches #"\d{9}" (:pid field)))))
 
 (defn check-valid-passports
   []
