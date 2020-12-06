@@ -10,11 +10,9 @@
   (sort (map (fn [s] (+ (Integer/parseInt (subs s 7 10) 2)
                         (* (Integer/parseInt (subs s 0 7) 2) 8))) (parse-input "input"))))
 
-(defn get-max-seat-id []
-  (last (get-seat-ids)))
+(defn get-max-seat-id [] (last (get-seat-ids)))
 
 (defn find-my-seat-id []
-  (let [ids      (get-seat-ids)
-        cons-ids (range (first ids) (inc (last  ids)))]
-    (- (reduce - ids) (reduce - cons-ids))))
+  (- (reduce - (get-seat-ids))
+     (reduce - (range (first (get-seat-ids)) (inc (last (get-seat-ids)))))))
 
