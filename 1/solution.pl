@@ -22,9 +22,6 @@ convert_to_number([H|T], String, Res) :-
     string_concat(String, C, New_string),
     convert_to_number(T, New_string, Res).
 
-is_zero(X) :- X = 0.
-
-
 exists_in(X, [X|_]) :- !.
 exists_in(X, [_|T]) :- exists_in(X, T).
 
