@@ -29,8 +29,18 @@ exists_in(X, [_|T]) :- exists_in(X, T).
 find_entries(Product) :-
     parser(input, Expence_report),
     find_entries(Expence_report, Product).
-find_entries([H|T], Product) :- Y is 2020 - H,
-                         exists_in(Y, T),
-                         Product is (2020 - H) * H, !.
+find_entries([H|T], Product) :- 
+    Y is 2020 - H,
+    exists_in(Y, T),
+    Product is Y * H, !.
 find_entries([_|T], Product) :- find_entries(T, Product).
 
+find_entries2(Product) :-
+    parser(input, Expence_report),
+    find_entries2(Expence_report, Expence_report, Product).
+find_entries2([_|T1], [], Product) :- find_entries2(T1, T1, Product).
+find_entries2([H1|_], [H2|T2], Product) :- 
+    Y is 2020 - (H1 + H2),
+    exists_in(Y, T2),
+    Product is Y * H1 * H2.
+find_entries2(X, [_|T], Product) :- find_entries2(X, T, Product).
