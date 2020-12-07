@@ -1,6 +1,7 @@
-parser(Input ,X) :- open(Input, read, In),
-             get0(In, Char),
-             parse_lines(Char, X, In).
+parser(Input, X) :-
+    open(Input, read, In),
+    get0(In, Char),
+    parse_lines(Char, X, In).
 
 parse_lines(-1, [], _) :- !. % Break at end of stream
 parse_lines(Char, [H|T], In) :-
@@ -8,7 +9,6 @@ parse_lines(Char, [H|T], In) :-
     convert_to_number(String, "", H),
     get0(In, Next_Char),
     parse_lines(Next_Char, T, In).
-
 
 read_line(10, [], _) :- !. % Break at new line
 read_line(Char, [Char | Rest], In) :-
