@@ -15,7 +15,6 @@ read_line(Char, [Char | Rest], In) :-
     get0(In, Next_Char),
     read_line(Next_Char, Rest, In).
 
-
 convert_to_number([], X, Y) :- number_string(Y, X), !.
 convert_to_number([H|T], String, Res) :- 
     char_code(C, H),
@@ -24,7 +23,6 @@ convert_to_number([H|T], String, Res) :-
 
 exists_in(X, [X|_]) :- !.
 exists_in(X, [_|T]) :- exists_in(X, T).
-
 
 find_entries(Product) :-
     parser(input, Expence_report),
